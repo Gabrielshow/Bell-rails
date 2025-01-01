@@ -27,6 +27,8 @@ html {
 
 .container {
     display: flex;
+    height: 100vh;
+    width: 100vw;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -105,7 +107,7 @@ html {
   cursor: pointer;
   line-height: 16px;
   height: 16px;
-  width: 64px;
+  /* width: 64px; */
   font-size: 20px;
   font-family: "BellSlimRegular", Helvetica, Arial, sans-serif;
 }
@@ -235,7 +237,7 @@ html {
     opacity: 0.8;
   }
   
-  .error {
+  .error-message {
     color: red;
     font-size: 12px;
     margin-top: 7px;
@@ -265,7 +267,7 @@ html {
       padding-left: 20px !important;
     }
   
-    .modal {
+    .modalwrapper {
       width: auto;
       /* Adjust width for even larger screens */
       margin-left: 30px;
@@ -280,9 +282,9 @@ html {
   }
 
 .modal {
-  display: none;  /* Hidden by default */
+  display: none;
   position: fixed;
-  z-index: 1;  /* Sit on top */
+  z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
@@ -298,6 +300,8 @@ html {
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
+  border-radius: 15px;
+
 }
 
 .close {
@@ -312,4 +316,59 @@ html {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+.modalheader {
+    margin-bottom: 20px;
+}
+
+.modalform-group {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+  margin-bottom: 10px;
+}
+
+.modalform-group label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  line-height: 18px;
+  height: 20px;
+  font-weight: 700;
+  font-family: "BellSlimBlack", Helvetica, Arial, sans-serif;
+}
+
+input.modalfield#modalemail,
+input.modalfield#modalpassword {
+  height: 40px;
+  /* padding: 10px; */
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+input:focus.modalfield#modalemail,
+input:focus.modalfield#modalpassword {
+  outline: none;
+  border: 1px solid #ffa07a;
+  box-shadow: 0 0 0 2px #007bff;
+  border-radius: 4px;
+}
+
+.modalsubmit {
+  background: linear-gradient(to right, #004e94, #0064a2);
+  border-radius: 9999px;
+  width: 100px;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.modalsubmit:hover {
+  opacity: 0.8;
 }
