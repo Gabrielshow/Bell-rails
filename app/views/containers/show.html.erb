@@ -62,11 +62,29 @@
     </div>
   </div>
 
-  <script>
-  // Modal functionality (basic JS)
+ <script>
+document.addEventListener('DOMContentLoaded', function() {
   var modal = document.getElementById("myModal");
   var btn = document.getElementById("openModal");
   var span = document.getElementsByClassName("close")[0];
+
+  if (btn) {
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+  }
+
+  if (span) {
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
 
   // Form submission and validation
   document.getElementById('login-form').addEventListener('submit', function(event) {
@@ -123,21 +141,10 @@
     }
   });
 
-  // Modal close functionality
-  span.onclick = function() {
-    modal.style.display = "none";
-  }
-
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-
-    // Handle the response and show the success message
+  // Handle the response and show the success message
   document.getElementById('telegram-form').addEventListener('ajax:success', function(event) {
     var [data, status, xhr] = event.detail;
-    document.getElementById('response').innerText = data.status;
+    document.getElementById(' response').innerText = data.status;
   });
 
   // Optionally, handle AJAX failure
@@ -145,6 +152,7 @@
     var [data, status, xhr] = event.detail;
     document.getElementById('response').innerText = 'An error occurred';
   });
-  </script>
+});
+</script>
 </body>
 </html>

@@ -3,13 +3,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Welcome to the App</title>
+  <title>Bell Business Site</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 </head>
 <body>
   <div class="container">
-    <%= image_tag 'bell.png', class: 'logo' %>
+    <%= image_tag 'bell.png' %>
     <h1>Your e-bill is Ready for Review</h1>
     <%= button_to 'Click Here to Continue', container_path, method: :get, class: 'redirect' %>
   </div>
