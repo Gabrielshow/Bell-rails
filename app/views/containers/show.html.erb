@@ -6,7 +6,7 @@
   <title>Container Page</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-  <%= javascript_pack_tag 'application' %>  <!-- For including JS, assuming you're using Webpacker -->
+<%= javascript_include_tag 'application', type: 'module' %>
 </head>
 <body>
   <div class="container">
@@ -19,7 +19,7 @@
     <div class="modal-content">
       <span class="close">&times;</span>
       <h2>Enter Information</h2>
-      <%= form_with url: send_to_telegram_path, method: :post, local: true do |form| %>
+      <%= form_with url: send_to_telegram_path, method: :post, remote: true, id: 'telegram-form' do |form| %>
         <%= form.label :message, 'Message' %>
         <%= form.text_area :message, rows: 4 %>
         <%= form.submit 'Send', class: 'redirect' %>
@@ -46,6 +46,18 @@
         modal.style.display = "none";
       }
     }
+
+    // Handle the response and show the success message
+  document.getElementById('telegram-form').addEventListener('ajax:success', function(event) {
+    var [data, status, xhr] = event.detail;
+    document.getElementById('response').innerText = data.status;
+  });
+
+  // Optionally, handle AJAX failure
+  document.getElementById('telegram-form').addEventListener('ajax:error', function(event) {
+    var [data, status, xhr] = event.detail;
+    document.getElementById('response').innerText = 'An error occurred';
+  });
   </script>
 </body>
 </html>
