@@ -1,0 +1,51 @@
+<!-- app/views/containers/show.html.erb -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Container Page</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= javascript_pack_tag 'application' %>  <!-- For including JS, assuming you're using Webpacker -->
+</head>
+<body>
+  <div class="container">
+    <h1>Container Page</h1>
+    <button id="openModal" class="redirect">Open Modal</button>
+  </div>
+
+  <!-- Modal -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Enter Information</h2>
+      <%= form_with url: send_to_telegram_path, method: :post, local: true do |form| %>
+        <%= form.label :message, 'Message' %>
+        <%= form.text_area :message, rows: 4 %>
+        <%= form.submit 'Send', class: 'redirect' %>
+      <% end %>
+    </div>
+  </div>
+
+  <script>
+    // Modal functionality (basic JS)
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("openModal");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
