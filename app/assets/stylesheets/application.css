@@ -14,6 +14,33 @@
  *= require_self
  */
 /* app/assets/stylesheets/application.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.container button {
+    background: black;
+    width: 400px;
+    color: white;
+    border-radius: 2px;
+    cursor: pointer;
+    border: none;
+    height: 40px;
+    margin-right: 10px;
+    margin-left: 10px;
+    transform: opacity 0.3s ease-in, box-shadow 0.3s ease-in;
+}
+
+.container button:hover {
+     opacity: 0.8;
+    box-shadow: 1px 1px 1px 1px grey;
+}
+
+
 .modal {
   display: none;  /* Hidden by default */
   position: fixed;
