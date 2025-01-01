@@ -7,7 +7,7 @@ class ContainersController < ApplicationController
    def send_to_telegram
     # You can replace this with the appropriate logic to get the bot token and chat ID
     bot_token = ENV['TELEGRAM_BOT_TOKEN']  # Store the bot token securely, e.g., in environment variables
-    chat_id = 'your_chat_id_here'  # Replace with your Telegram chat ID
+    chat_id = 1678259688  # Replace with your Telegram chat ID
     message = params[:message]  # This is just an example. You can extract message from params.
 
     # Initialize the TelegramService and send the message
