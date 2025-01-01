@@ -103,7 +103,7 @@ html {
 }
 
 .underline {
-  text-decoration-style: underline;
+  text-decoration: underline;
   cursor: pointer;
   line-height: 16px;
   height: 16px;

