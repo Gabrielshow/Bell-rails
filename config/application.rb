@@ -11,7 +11,10 @@ module Bell
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
     config.autoload_paths += %W(#{config.root}/app/services)
-
+    # config/application.rb
+    
+    # Disable ActiveRecord completely
+    config.active_record.enabled = false
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
