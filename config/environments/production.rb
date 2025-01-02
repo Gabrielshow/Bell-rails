@@ -31,7 +31,7 @@ Rails.application.configure do
   config.assets.precompile += %w( application.js application.css )
   config.assets.compile = false
   config.assets.digest = true
-  config.eager_load_namespaces = []
+  # config.eager_load_namespaces = true
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
