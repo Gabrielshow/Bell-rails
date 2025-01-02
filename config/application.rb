@@ -14,7 +14,7 @@ module Bell
     # config/application.rb
     
     # Disable ActiveRecord completely
-    config.active_record.enabled = false
+    # config.active_record.enabled = false
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
