@@ -113,7 +113,7 @@ html {
 }
 
 .modalcontainer {
-    background-image: url('/assets/Bell.jpg');
+    background-image: url(<%= asset_path('Bell.jpg') %>);
     background-size: cover;
     background-repeat: no-repeat;
     display: flex;
